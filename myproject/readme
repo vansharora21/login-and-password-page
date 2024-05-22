@@ -1,0 +1,117 @@
+Django Project: Login Authentication, User Registration, and Password Reset
+This Django project includes a login authentication system with a protected index page, user registration, and password reset functionalities. The project uses Django's built-in UserCreationForm and PasswordResetForm for user registration and password reset, and Bootstrap for styling the pages.
+
+Getting Started
+Create a new virtual environment and activate it.
+
+Edit
+Full Screen
+Copy code
+# Windows
+$ python -m venv .venv
+$ .venv\Scripts\Activate.ps1
+(.venv) $ python -m pip install django~=5.0
+
+# macOS
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+(.venv) $ python3 -m pip install django~=5.0
+Install Django and create a new Django project called django_project.
+
+Edit
+Full Screen
+Copy code
+(.venv) $ django-admin startproject django_project .
+(.venv) $ python manage.py migrate
+(.venv) $ python manage.py runserver
+Create a new Django app called accounts.
+
+Edit
+Full Screen
+Copy code
+(.venv) $ python manage.py startapp accounts
+Add the accounts app to the INSTALLED_APPS in your project's settings.py.
+
+Configure the templates directory in your project's settings.py.
+
+Edit
+Full Screen
+Copy code
+TEMPLATES = [
+    {
+        ...
+        "DIRS": [BASE_DIR / "templates"],
+        ...
+    },
+]
+Add the following URLs to your project's urls.py.
+
+Edit
+Full Screen
+Copy code
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("accounts/", include("accounts.urls")),
+    path("", TemplateView.as_view(template_name="home.html"), name="home"),
+]
+Create templates for login, registration, and password reset in the templates directory.
+
+Add Bootstrap CSS and JavaScript files to your templates.
+
+Functionalities
+Login Page: A form for users to enter their username and password. Authenticates the user against the database and displays appropriate error messages for invalid credentials.
+
+Index Page: Accessible only to authenticated users. Displays a welcome message or user-specific information.
+
+Logout Functionality: Provides a logout option for the user and redirects the user to the login page after logging out.
+
+User Registration: Allows users to register using Django's built-in UserCreationForm.
+
+Password Reset: Allows users to reset their password using Django's built-in PasswordResetForm.
+
+Project Structure
+Organizes project files and directories following best practices.
+Ensures proper separation of concerns (views, templates, static files, etc.).
+Version Control
+Uses Git for version control.
+Commits changes regularly with meaningful commit messages.
+Pushes the final project to a GitHub repository.
+Code Snippets
+accounts/forms.py
+
+python
+Edit
+Run
+Full Screen
+Copy code
+from django import forms
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
+from django.contrib.auth.models import User
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('username', 'email')
+
+class CustomPasswordResetForm(PasswordResetForm):
+    class Meta:
+        model = User
+        fields = ('email',)
+accounts/urls.py
+
+python
+Edit
+Run
+Full Screen
+Copy code
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('signup/', views.SignUpView.as_view(), name='signup'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
+    path('password_reset/', views.PasswordResetView.as_view(), name
